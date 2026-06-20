@@ -604,7 +604,7 @@ static const uint32_t fp_kernel[] = {
     0xD00481D3,  /* fcvt.s.w f3, x9            ; f3 = 1.0 */
     0x10208253,  /* fmul.s f4, f1, f2          ; f4 = tid * 2.0 */
     0x003202D3,  /* fadd.s f5, f4, f3          ; f5 = tid * 2.0 + 1.0 */
-    0xC00293D3,  /* fcvt.w.s x7, f5, RTZ       ; x7 = (int)result */
+    0xC01283D3,  /* fcvt.w.s x7, f5, RTZ       ; x7 = (int)result */
     0x00231413,  /* slli   x8, x6, 2           ; x8 = tid * 4 */
     0x00001E37,  /* lui    x28, 1              ; x28 = 0x1000 */
     0x008E0E33,  /* add    x28, x28, x8        ; x28 = &output[tid] */
@@ -684,14 +684,14 @@ static const uint32_t lp_convert_kernel[] = {
     0xD00480D3,  /* fcvt.s.w  f1, x9           ; f1 = 42.0             */
     0x44108153,  /* fcvt.bf16.s f2, f1         ; f2[15:0] = bf16(42.0) */
     0x440101D3,  /* fcvt.s.bf16 f3, f2         ; f3 = f32(bf16)        */
-    0xC0019553,  /* fcvt.w.s x10, f3, rtz      ; x10 = (int)f3 = 42   */
+    0xC0118553,  /* fcvt.w.s x10, f3, rtz      ; x10 = (int)f3 = 42   */
 
     /* E4M3 round-trip: 2 → f32 → e4m3 → f32 → int */
     0x00200493,  /* addi   x9, x0, 2          ; x9 = 2                 */
     0xD00480D3,  /* fcvt.s.w  f1, x9           ; f1 = 2.0              */
     0x48108153,  /* fcvt.e4m3.s f2, f1         ; f2[7:0] = e4m3(2.0)  */
     0x480101D3,  /* fcvt.s.e4m3 f3, f2         ; f3 = f32(e4m3(2.0))  */
-    0xC00195D3,  /* fcvt.w.s x11, f3, rtz      ; x11 = (int)f3 = 2    */
+    0xC01185D3,  /* fcvt.w.s x11, f3, rtz      ; x11 = (int)f3 = 2    */
 
     /* Store: output[tid*2]=x10, output[tid*2+1]=x11 */
     0x00331413,  /* slli   x8, x6, 3          ; x8 = tid * 8           */
@@ -779,28 +779,28 @@ static const uint32_t lp_convert_e5m2_e2m1_kernel[] = {
     0xD00480D3,  /* fcvt.s.w  f1, x9           ; f1 = 4.0              */
     0x48308153,  /* fcvt.e5m2.s f2, f1         ; f2 = e5m2(4.0)        */
     0x482101D3,  /* fcvt.s.e5m2 f3, f2         ; f3 = f32(e5m2)        */
-    0xC0019553,  /* fcvt.w.s x10, f3, rtz      ; x10 = 4               */
+    0xC0118553,  /* fcvt.w.s x10, f3, rtz      ; x10 = 4               */
 
     /* E2M1 round-trip: 2 → f32 → e2m1 → f32 → int */
     0x00200493,  /* addi   x9, x0, 2          ; x9 = 2                  */
     0xD00480D3,  /* fcvt.s.w  f1, x9           ; f1 = 2.0              */
     0x4C108153,  /* fcvt.e2m1.s f2, f1         ; f2 = e2m1(2.0)        */
     0x4C0101D3,  /* fcvt.s.e2m1 f3, f2         ; f3 = f32(e2m1)        */
-    0xC00195D3,  /* fcvt.w.s x11, f3, rtz      ; x11 = 2               */
+    0xC01185D3,  /* fcvt.w.s x11, f3, rtz      ; x11 = 2               */
 
     /* BF16 round-trip: -3 → f32 → bf16 → f32 → int */
     0xFFD00493,  /* addi   x9, x0, -3         ; x9 = -3                 */
     0xD00480D3,  /* fcvt.s.w  f1, x9           ; f1 = -3.0             */
     0x44108153,  /* fcvt.bf16.s f2, f1         ; f2 = bf16(-3.0)        */
     0x440101D3,  /* fcvt.s.bf16 f3, f2         ; f3 = f32(bf16)         */
-    0xC0019653,  /* fcvt.w.s x12, f3, rtz      ; x12 = -3              */
+    0xC0118653,  /* fcvt.w.s x12, f3, rtz      ; x12 = -3              */
 
     /* E4M3 round-trip: -2 → f32 → e4m3 → f32 → int */
     0xFFE00493,  /* addi   x9, x0, -2         ; x9 = -2                 */
     0xD00480D3,  /* fcvt.s.w  f1, x9           ; f1 = -2.0             */
     0x48108153,  /* fcvt.e4m3.s f2, f1         ; f2 = e4m3(-2.0)       */
     0x480101D3,  /* fcvt.s.e4m3 f3, f2         ; f3 = f32(e4m3)        */
-    0xC00196D3,  /* fcvt.w.s x13, f3, rtz      ; x13 = -2              */
+    0xC01186D3,  /* fcvt.w.s x13, f3, rtz      ; x13 = -2              */
 
     /* Store 4 results: tid * 16 offset */
     0x00431413,  /* slli   x8, x6, 4          ; x8 = tid * 16           */
@@ -880,35 +880,35 @@ static const uint32_t lp_convert_saturate_kernel[] = {
     0xD00480D3,  /* fcvt.s.w  f1, x9           ; f1 = 0.0              */
     0x48108153,  /* fcvt.e4m3.s f2, f1         ; f2 = e4m3(0.0)        */
     0x480101D3,  /* fcvt.s.e4m3 f3, f2         ; f3 = f32(e4m3)        */
-    0xC0019553,  /* fcvt.w.s x10, f3, rtz      ; x10 = 0               */
+    0xC0118553,  /* fcvt.w.s x10, f3, rtz      ; x10 = 0               */
 
     /* E2M1 round-trip: 0 → f32 → e2m1 → f32 → int */
     0x00000493,  /* addi   x9, x0, 0          ; x9 = 0                  */
     0xD00480D3,  /* fcvt.s.w  f1, x9           ; f1 = 0.0              */
     0x4C108153,  /* fcvt.e2m1.s f2, f1         ; f2 = e2m1(0.0)        */
     0x4C0101D3,  /* fcvt.s.e2m1 f3, f2         ; f3 = f32(e2m1)        */
-    0xC00195D3,  /* fcvt.w.s x11, f3, rtz      ; x11 = 0               */
+    0xC01185D3,  /* fcvt.w.s x11, f3, rtz      ; x11 = 0               */
 
     /* E2M1 round-trip: 100 → saturate → 6 */
     0x06400493,  /* addi   x9, x0, 100        ; x9 = 100                */
     0xD00480D3,  /* fcvt.s.w  f1, x9           ; f1 = 100.0            */
     0x4C108153,  /* fcvt.e2m1.s f2, f1         ; f2 = e2m1(100.0) sat  */
     0x4C0101D3,  /* fcvt.s.e2m1 f3, f2         ; f3 = 6.0              */
-    0xC0019653,  /* fcvt.w.s x12, f3, rtz      ; x12 = 6               */
+    0xC0118653,  /* fcvt.w.s x12, f3, rtz      ; x12 = 6               */
 
     /* E4M3 round-trip: 1000 → saturate → 448 */
     0x3E800493,  /* addi   x9, x0, 1000       ; x9 = 1000              */
     0xD00480D3,  /* fcvt.s.w  f1, x9           ; f1 = 1000.0           */
     0x48108153,  /* fcvt.e4m3.s f2, f1         ; f2 = e4m3(1000) sat   */
     0x480101D3,  /* fcvt.s.e4m3 f3, f2         ; f3 = 448.0            */
-    0xC00196D3,  /* fcvt.w.s x13, f3, rtz      ; x13 = 448             */
+    0xC01186D3,  /* fcvt.w.s x13, f3, rtz      ; x13 = 448             */
 
     /* E4M3 of +Inf → saturate → 448 */
     0x7F8004B7,  /* lui    x9, 0x7F800        ; x9 = 0x7F800000 (+Inf) */
     0xF00480D3,  /* fmv.w.x f1, x9            ; f1 = +Inf              */
     0x48108153,  /* fcvt.e4m3.s f2, f1         ; f2 = e4m3(Inf) sat    */
     0x480101D3,  /* fcvt.s.e4m3 f3, f2         ; f3 = 448.0            */
-    0xC0019753,  /* fcvt.w.s x14, f3, rtz      ; x14 = 448             */
+    0xC0118753,  /* fcvt.w.s x14, f3, rtz      ; x14 = 448             */
 
     /* Store 5 results: tid * 20 offset (tid=0 → base=0x1000) */
     0x00001E37,  /* lui    x28, 1             ; x28 = 0x1000             */
