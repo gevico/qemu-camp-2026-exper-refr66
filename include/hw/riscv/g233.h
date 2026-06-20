@@ -93,10 +93,10 @@ enum {
 };
 
 enum {
-    UART0_IRQ = 10,
-    RTC_IRQ = 11,
-    VIRTIO_IRQ = 1, /* 1 to 8 */
+    UART0_IRQ = 1,
+    VIRTIO_IRQ = 6, /* 6 to 13 */
     VIRTIO_COUNT = 8,
+    RTC_IRQ = 14,
     PCIE_IRQ = 0x20, /* 32 to 35 */
     IOMMU_SYS_IRQ = 0x24, /* 36-39 */
     VIRT_PLATFORM_BUS_IRQ = 64, /* 64 to 95 */
